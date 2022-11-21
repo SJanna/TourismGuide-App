@@ -1,0 +1,61 @@
+{% extends "locations/index.html" %}
+{% block title %}
+<h1 class="display-4 fw-bolder">My Sites</h1>
+<p><a  target="_blank" href='https://www.google.com/maps/dir/{% for myplace in myplaces %}{{myplace.place.coordinates}}/{% endfor %}'><button class="btn btn-sm btn-outline-light mt-auto">Follow Route</button></a></p>
+{% endblock title %}
+
+{% block counter %}
+<form action="{% url 'myRoute' %}" class="d-flex">
+    <button class="btn btn-outline-dark" type="submit">
+        {% comment %} <i class="bi-cart-fill me-1"></i> {% endcomment %}
+        My sites
+        <span class="badge bg-dark text-white ms-1 rounded-pill">{{myplaces.count}}</span>
+    </button>
+</form>
+{% endblock counter %}
+
+{%block body%}
+        <!-- Section-->
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    {% for myplace in myplaces %}
+                    {% csrf_token %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            {% load static %}
+                            {% with 'assets/'|add:myplace.place.name|add:'.jpg' as image_static %}
+                            <a href="https://www.google.com/maps/dir//{{place.coordinates}}"><img class="card-img-top"  src={% static image_static %} alt="..." /></a>
+                            {% endwith %}
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder" for="myname">{{myplace.place.name}}</h5>
+                                    <!-- Product price-->
+                                    {{myplace.place.description}}
+                                </div>
+                            </div>
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <form action="{% url 'placeDelete' placeid=myplace.place.id %}" method="post">      
+                                {% csrf_token %}
+                                <div class="text-center"><button class="btn btn-outline-danger mt-auto" type="Submit">Delete</button></div>     
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% comment %} <iframe
+        width="600"
+        height="450"
+        style="border:0"
+        loading="lazy"
+        allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyAEZJ12hodDjavoCKza-b-jGOT3CVg6Acg&origin=11.020377957028819, -74.85117893215462&destination=11.019713573186664, -74.83636736940461">
+        </iframe> {% endcomment %}
+        {% endblock%}
