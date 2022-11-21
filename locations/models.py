@@ -11,12 +11,5 @@ class Place(models.Model):
 
     def __str__(self):
         return self.name
-    
-class Route(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    name = models.CharField(max_length=50)
-    places= models.ManyToManyField(Place, blank=True)
 
-    def __str__(self):
-        return self.name
     
