@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .forms import placeForm, myRouteForm
 from .models import Place
 from users.models import myRoute
+import random
 
 # Create your views here.
 
@@ -13,6 +14,9 @@ def get_place(request):
         form = placeForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
+            obj = form.save(commit=False) # Return an object without saving to the DB
+            obj.coordinates = random.random() # Add an author field which will contain current user's id
+            obj.save() # Save the final "real form" to the DB
             # process the data in form.cleaned_data as required
             form.save()
 
@@ -25,7 +29,7 @@ def get_place(request):
 
 def list_place(request, placetype=None):
     if placetype==None:
-        places=Place.objects.all()
+        places=Place.objects.all().order_by('coordinates')
     else:
         places=Place.objects.filter(type=placetype)
     myroutes=myRoute.objects.filter(user=request.user.id)

@@ -6,7 +6,7 @@ from users.models import myRoute
 class placeForm(forms.ModelForm):
     class Meta:
         model = Place
-        fields = '__all__'
+        exclude = ('coordinates',)
 
 
 class myRouteForm(forms.ModelForm):
