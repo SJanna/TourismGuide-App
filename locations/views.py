@@ -32,24 +32,26 @@ def list_place(request):
             # create a form instance and populate it with data from the request:
             form = myRouteForm(request.POST)
             for field in form:
-                print('VALUES->',field.value())
+                value= int(field.value())
             
             # check whether it's valid:
             if form.is_valid():
                 obj = form.save(commit=False) # Return an object without saving to the DB
                 obj.user = User.objects.get(pk=request.user.id) # Add an author field which will contain current user's id
-                obj.save() # Save the final "real form" to the DB  
+                obj.save() # Save the final "real form" to the DB
+                added=True
                 return redirect('placeList')
+                # return render(request, 'locations/index.html', {'places': places, 'form': form, 'myroutes': myroutes, 'value':value, 'added':added})
             else:
                 print("ERROR : Form is invalid")
                 print(form.errors)
         else:
-            return redirect('/login/')
+            form = myRouteForm()
+            return render(request, 'locations/index.html', {'places': places, 'form': form, 'notLoged': True})
     # if a GET (or any other method) we'll create a blank form
     else:
         form = myRouteForm()
-
-    return render(request, 'locations/index.html', {'places': places, 'form': form, 'myroutes': myroutes})
+        return render(request, 'locations/index.html', {'places': places, 'form': form, 'myroutes': myroutes})
 
 
 def my_route(request):
@@ -58,7 +60,7 @@ def my_route(request):
 
 def place_delete(request, placeid):
     print(placeid)
-    print( myRoute.objects.filter(place=placeid))
-    myRoute.objects.filter(place=placeid).delete()
+    print( myRoute.objects.filter(id=placeid))
+    myRoute.objects.filter(id=placeid).delete()
     print(myRoute.objects.all().values())
     return redirect('myRoute')

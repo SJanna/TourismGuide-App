@@ -11,4 +11,3 @@ class myRoute(models.Model):
     def __str__(self):
         return self.place.name
 
-
