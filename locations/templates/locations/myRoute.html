@@ -5,13 +5,13 @@
 {% endblock title %}
 
 {% block counter %}
-<form action="{% url 'myRoute' %}" class="d-flex">
-    <button class="btn btn-outline-dark" type="submit">
-        {% comment %} <i class="bi-cart-fill me-1"></i> {% endcomment %}
-        My sites
-        <span class="badge bg-secondary text-white ms-1 rounded-pill" style="position:absolute; top:0; start:50;">{{myplaces.count}}</span>
-    </button>
-</form>
+    <a href="{% url 'myRoute' %}">
+        <button class="btn btn-outline-dark" href="{% url 'myRoute' %}">
+            My sites
+            <span class="badge bg-dark text-white ms-1 rounded-pill">{{myplaces.count}}</span>
+        </button>
+    </a>
+
 {% endblock counter %}
 
 {%block body%}
