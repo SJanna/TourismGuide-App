@@ -20,9 +20,11 @@ from locations import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('placeForm/',views.get_place),
+    path('<str:placetype>',views.list_place,name='placeList'),
     path('',views.list_place,name='placeList'),
     path('myRoute/',views.my_route, name='myRoute'),   
     path('placeDelete/<int:placeid>/',views.place_delete,name='placeDelete'), 
     path('', include('django.contrib.auth.urls')),  
     path('', include('users.urls')),
 ]
+ 

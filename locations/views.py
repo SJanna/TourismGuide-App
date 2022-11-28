@@ -23,8 +23,11 @@ def get_place(request):
     return render(request, 'locations/placeForm.html', {'form': form})
 
 
-def list_place(request):
-    places=Place.objects.all()
+def list_place(request, placetype=None):
+    if placetype==None:
+        places=Place.objects.all()
+    else:
+        places=Place.objects.filter(type=placetype)
     myroutes=myRoute.objects.filter(user=request.user.id)
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
